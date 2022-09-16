@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.hyodong.kim.dao.IMemberDao">
+	
+ 	<!-- 회원목록 가져오기_오름차순 ; 회원 번호 -->
+	<select id="memberlist" resultType="com.hyodong.kim.dto.MemberDto">
+	SELECT * FROM Member ORDER BY num
+	</select>
+	
+	<select id="callmember" resultType="com.hyodong.kim.dto.MemberDto">
+		SELECT * FROM Member WHERE num=#{param1}
+	</select>
+	
+	<insert id="addMember_findnum" parameterType="com.hyodong.kim.dto.MemberDto">
+		INSERT INTO Member(
+		  num, id, password, name, birthday_year,
+		  birthday_month, sex, email, phone, ticket, auth)
+					values(Member_INDEX.nextval, #{param1}, #{param2}, #{param3},
+					#{param4}, #{param5}, #{param6}, #{param7}, #{param8}, #{param9}, #{param10})
+	</insert>
+	
+	<!-- 유저 추가하기 ; -->
+	<insert id="addMember" parameterType="com.hyodong.kim.dto.MemberDto">
+		INSERT INTO Member(
+		  num, id, password, name, birthday_year,
+		  birthday_month, sex, email, phone, ticket, auth)
+					values(#{param1}, #{param2}, #{param3},
+					#{param4}, #{param5}, #{param6}, #{param7}, #{param8}, #{param9}, #{param10}, #{param11})
+					
+	</insert>
+	
+	<!-- 유저 편집하기 ; 도서 번호로 편집 : 편집버튼으로 번호 얻어오기 
+						  ; -->
+	<update id="updateMember" parameterType="com.hyodong.kim.dto.MemberDto">
+		UPDATE Member set
+			id=#{param2}, password=#{param3}, name=#{param4},
+			birthday_year=#{param5}, birthday_month=#{param6}, sex=#{param7},
+			email=#{param8}, phone=#{param9}, ticket=#{param10}, auth=#{param11}
+		  WHERE num=#{param1}
+	</update>
+ 	
+ 	<!-- 유저 삭제하기 ; 도서 인덱스 : 삭제버튼으로 번호 얻어오기! -->
+ 	<delete id="deleteMember" parameterType="com.hyodong.kim.dto.MemberDto">
+ 		DELETE FROM Member WHERE num=#{param1}
+ 	</delete>
+ 	
+</mapper>
