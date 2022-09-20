@@ -12,14 +12,9 @@
 <title>유저 삽입</title>
 </head>
 <body>
-	<form action="<c:url value="/addMember"/>" method="get">
+	<form action="<c:url value="/addMember_findnum"/>" method="get">
 	
 		<table width="500">
-		
-		<tr>
-			<td>번호</td>
-			<td><input type="text" rows="16" cols="95" name="num" value="${num}"> </td>
-		</tr>
 		
 		<tr>
 			<td>아이디</td>

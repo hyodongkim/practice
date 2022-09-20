@@ -57,35 +57,8 @@ public class MyController {
 		return "admin/write_member2";
 	}
 			
-//	@RequestMapping(value="/addMember_findnum", method=RequestMethod.GET)
-//	public String addMembe_findnum( 	
-//								@RequestParam("num") int num,
-//					        	@RequestParam("id") String id,
-//					            @RequestParam("password") String password, 
-//					            @RequestParam("name") String name, 
-//					            @RequestParam("birthday_year") int birthday_year,
-//					            @RequestParam("birthday_month") int birthday_month,
-//					            @RequestParam("sex") int sex,
-//					            @RequestParam("email") String email,
-//					            @RequestParam("phone") String phone,
-//					            @RequestParam("ticket") int ticket,
-//					            @RequestParam("auth") int auth,
-//					              
-//					       Model model ) throws Exception{
-//				
-//				           memberDao.addMember_findnum(num);
-//				                   
-//				           List<MemberDto> list = memberDao.memberlist();
-//				           model.addAttribute("callmember",list);
-//					                     
-//		return "admin/memberManage";
-//				
-//		
-//	}
-			
-	@RequestMapping(value="/addMember", method=RequestMethod.GET)
-	public String addMember( 	
-								@RequestParam("num") int num,
+	@RequestMapping(value="/addMember_findnum", method=RequestMethod.GET)
+	public String addMembe_findnum( 	
 					        	@RequestParam("id") String id,
 					            @RequestParam("password") String password, 
 					            @RequestParam("name") String name, 
@@ -99,7 +72,33 @@ public class MyController {
 					              
 					       Model model ) throws Exception{
 				
-				           memberDao.addMember(num, id, password, name, birthday_year, birthday_month,
+				           memberDao.addMember_findnum(id, password, name, birthday_year, birthday_month,
+						           sex, email, phone, ticket, auth);
+				                   
+				           List<MemberDto> list = memberDao.memberlist();
+				           model.addAttribute("memberlist",list);
+					                     
+		return "admin/memberManage";
+				
+		
+	}
+			
+	@RequestMapping(value="/addMember", method=RequestMethod.GET)
+	public String addMember( 	
+					        	@RequestParam("id") String id,
+					            @RequestParam("password") String password, 
+					            @RequestParam("name") String name, 
+					            @RequestParam("birthday_year") int birthday_year,
+					            @RequestParam("birthday_month") int birthday_month,
+					            @RequestParam("sex") int sex,
+					            @RequestParam("email") String email,
+					            @RequestParam("phone") String phone,
+					            @RequestParam("ticket") int ticket,
+					            @RequestParam("auth") int auth,
+					              
+					       Model model ) throws Exception{
+				
+				           memberDao.addMember(id, password, name, birthday_year, birthday_month,
 				           sex, email, phone, ticket, auth);
 				                   
 				           List<MemberDto> list = memberDao.memberlist();
