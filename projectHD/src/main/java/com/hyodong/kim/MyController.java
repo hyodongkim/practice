@@ -134,7 +134,6 @@ public class MyController {
 						
 	}
 			
-			// 유저 목록 삭제
 	@RequestMapping(value="/deleteMember", method=RequestMethod.GET)
 	public String deleteMember( @RequestParam("num") int num, Model model ) throws Exception {
 				
@@ -147,5 +146,30 @@ public class MyController {
 	    return "admin/memberManage";
 						
 	}
+	
+	@RequestMapping(value="/adminLogin", method=RequestMethod.GET)
+	public String adminLogin( @RequestParam("id") String id, @RequestParam("password") String password, Model model ) throws Exception {
+				
+	
+		System.out.println("로그인 완료");
+							                     
+	    return "user/main";
+						
+	}
+	
+	@RequestMapping("/user/login")
+	public String login(HttpServletRequest req, Model model) {
+				
+		
+		return "user/login";
+	}
+	
+	@RequestMapping("/user/main")
+	public String main(HttpServletRequest req, Model model) {
+				
+		
+		return "user/main";
+	}
+	
 	
 }

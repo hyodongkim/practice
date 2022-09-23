@@ -15,6 +15,10 @@
 		SELECT * FROM Member WHERE num=#{param1}
 	</select>
 	
+	<select id="find_id_password" resultType="com.hyodong.kim.dto.MemberDto">
+		SELECT id,password FROM Member WHERE id=#{param1} and password=#{param2} 
+	</select>
+	
 	<insert id="addMember_findnum" parameterType="com.hyodong.kim.dto.MemberDto">
 		INSERT INTO Member(
 		  num, id, password, name, birthday_year,
