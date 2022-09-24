@@ -97,7 +97,7 @@
       </div>
       <div id="main">
         <div id="login">
-          <form method="get" action="/adminlogin">
+          <form method="get" action="/login">
             <label>ID<input type="text" name="id"></label>
             <label>Password<input type="text" name="password"></label>
             </br>

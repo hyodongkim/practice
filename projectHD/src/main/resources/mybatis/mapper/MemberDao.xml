@@ -52,4 +52,8 @@
  		DELETE FROM Member WHERE num=#{param1}
  	</delete>
  	
+ 	<select id="login" resultType="com.hyodong.kim.dto.MemberDto">
+		SELECT * FROM Member WHERE id=#{id} and password=#{password}
+	</select>
+	
 </mapper>

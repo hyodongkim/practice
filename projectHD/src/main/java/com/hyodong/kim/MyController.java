@@ -3,6 +3,7 @@ package com.hyodong.kim;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,12 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hyodong.kim.dao.IMemberDao;
 import com.hyodong.kim.dto.MemberDto;
+import com.hyodong.kim.service.hyodongKimService;
 
 @Controller
 public class MyController {
 	
 	@Autowired 
 	private IMemberDao memberDao;
+	@Autowired
+	private hyodongKimService service;
 
 	@RequestMapping("/")
 	public String memberlist( HttpServletRequest req, Model model ) {
@@ -147,15 +151,46 @@ public class MyController {
 						
 	}
 	
-	@RequestMapping(value="/adminLogin", method=RequestMethod.GET)
-	public String adminLogin( @RequestParam("id") String id, @RequestParam("password") String password, Model model ) throws Exception {
+	@RequestMapping(value="/login", method=RequestMethod.GET)
+	public String login(MemberDto memberDto, HttpSession session, HttpServletRequest request, Model model ) throws Exception {
 				
+//	   int result = service.login(id, password);
+//       
+//       if( result == 1) {
+//    	   
+//    	   request.getSession().setAttribute("alert", "로그인되었습니다.");
+//    	   request.getSession().setAttribute("id",id);
+//    	   request.getSession().setAttribute("password",password);
+//       	   System.out.println("관리자 로그인 성공");
+//       	   
+//              return "user/login_ok";
+//
+//       } else {
+//    		 
+//    	   request.getSession().setAttribute("id",id);
+//    	   request.getSession().setAttribute("password", password);
+//       	   System.out.println("관리자 로그인 실패");
+//       	   
+//           	 return "user/login_fail";
+//            	 
+//       }
+//						
+//	}
 	
-		System.out.println("로그인 완료");
-							                     
-	    return "user/main";
-						
+		memberDto = service.login(memberDto);
+		
+		if(memberDto != null ) {
+			
+			return "user/login_ok";
+		}
+		else {
+			
+			return "user/login_fail";
+		}
+		
+		
 	}
+		
 	
 	@RequestMapping("/user/login")
 	public String login(HttpServletRequest req, Model model) {
@@ -169,6 +204,20 @@ public class MyController {
 				
 		
 		return "user/main";
+	}
+	
+	@RequestMapping("/user/login_fail")
+	public String login_fail(HttpServletRequest req, Model model) {
+				
+		
+		return "user/login_fail";
+	}
+	
+	@RequestMapping("/user/login_ok")
+	public String login_ok(HttpServletRequest req, Model model) {
+				
+		
+		return "user/login_ok";
 	}
 	
 	

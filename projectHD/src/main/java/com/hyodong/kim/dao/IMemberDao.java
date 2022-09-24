@@ -25,8 +25,7 @@ public interface IMemberDao {
 
     public int deleteMember( int num );
     
- 
-    
+    public MemberDto login(MemberDto memberdto);
     
     
     
