@@ -27,6 +27,8 @@ public interface IMemberDao {
     
     public MemberDto login(MemberDto memberdto);
     
+    public int findId(String id, String password);
+    
     
     
     

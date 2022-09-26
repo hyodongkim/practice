@@ -152,34 +152,21 @@ public class MyController {
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
-	public String login(MemberDto memberDto, HttpSession session, HttpServletRequest request, Model model ) throws Exception {
-				
-//	   int result = service.login(id, password);
-//       
-//       if( result == 1) {
-//    	   
-//    	   request.getSession().setAttribute("alert", "로그인되었습니다.");
-//    	   request.getSession().setAttribute("id",id);
-//    	   request.getSession().setAttribute("password",password);
-//       	   System.out.println("관리자 로그인 성공");
-//       	   
-//              return "user/login_ok";
-//
-//       } else {
-//    		 
-//    	   request.getSession().setAttribute("id",id);
-//    	   request.getSession().setAttribute("password", password);
-//       	   System.out.println("관리자 로그인 실패");
-//       	   
-//           	 return "user/login_fail";
-//            	 
-//       }
-//						
-//	}
+	public String login(MemberDto memberDto, 
+						@RequestParam("id") String id, 
+						@RequestParam("password") String password,
+						HttpServletRequest request, Model model ) throws Exception {
 	
 		memberDto = service.login(memberDto);
 		
 		if(memberDto != null ) {
+			request.getSession().setAttribute("id",id);	    	   
+			request.getSession().setAttribute("password",password);
+			
+			HttpSession session = request.getSession();
+			
+			session.getAttribute("id");
+			session.getAttribute("password");
 			
 			return "user/login_ok";
 		}
@@ -193,10 +180,26 @@ public class MyController {
 		
 	
 	@RequestMapping("/user/login")
-	public String login(HttpServletRequest req, Model model) {
+	public String login( HttpServletRequest req, Model model) {
 				
 		
 		return "user/login";
+	}
+	
+	@RequestMapping("/user/logout")
+	public String logout_page( 
+			 				   HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		session.invalidate();
+		
+		return "user/logout";
+	}
+	
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
+	public String logout( HttpServletRequest request, Model model) throws Exception {
+		
+		
+		return "user/logout";  
 	}
 	
 	@RequestMapping("/user/main")
@@ -207,15 +210,22 @@ public class MyController {
 	}
 	
 	@RequestMapping("/user/login_fail")
-	public String login_fail(HttpServletRequest req, Model model) {
-				
+	public String login_fail( HttpServletRequest req, Model model) {
 		
 		return "user/login_fail";
 	}
 	
 	@RequestMapping("/user/login_ok")
-	public String login_ok(HttpServletRequest req, Model model) {
-				
+	public String login_ok( MemberDto memberDto,
+			 				@RequestParam("id") String id,
+			 				@RequestParam("password") String password,
+							HttpServletRequest request, Model model) throws Exception {
+		
+		HttpSession session = request.getSession();
+		
+		session.setAttribute("id",id);
+		session.setAttribute("password", password);
+		
 		
 		return "user/login_ok";
 	}

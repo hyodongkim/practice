@@ -20,6 +20,11 @@ public class hyodongKimService {
 	
 		return memberDao.login(memberDto);
 	}
+	
+	public int findId(String id, String password) throws Exception{
+		
+		return memberDao.findId(id, password);
+	}
 
 	  
 	  

@@ -11,14 +11,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+로그아웃!
 
-성공!
-${id}
-${password}
-
-<form method="get" action="/logout">
-<a href="/user/logout"><input type="button" value="로그아웃"></a>
-</form>
-
+현재 아이디 : ${id}
+현재 비밀번호 : ${password}
 </body>
 </html>

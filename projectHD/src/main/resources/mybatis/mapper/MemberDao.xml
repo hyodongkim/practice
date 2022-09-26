@@ -56,4 +56,8 @@
 		SELECT * FROM Member WHERE id=#{id} and password=#{password}
 	</select>
 	
+	<select id="findId" resultType="com.hyodong.kim.dto.MemberDto">
+		SELECT * FROM Member where id=#{id} and password=#{password}
+	</select>
+	
 </mapper>
