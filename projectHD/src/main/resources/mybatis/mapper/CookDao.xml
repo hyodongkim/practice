@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.hyodong.kim.dao.ICookDao">
+
+	<select id="cookList" resultType="com.hyodong.kim.dto.CookDto">
+	SELECT * FROM Cook ORDER BY cook_Index
+	</select>
+	
+	<select id="callCook" resultType="com.hyodong.kim.dto.CookDto">
+		SELECT * FROM Cook WHERE cook_Index=#{param1}
+	</select>
+	
+	<insert id="addCook" parameterType="com.hyodong.kim.dto.CookDto">
+		INSERT INTO Cook(cook_Index, cook_Title, cook_Writer, cook_Company, cook_Image,
+						 cook_Content, cook_Introduce, cook_Category) 
+						 VALUES( Cook_Index.nextval, #{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param6}, #{param7})
+	</insert>
+	
+	<update id="updateCook" parameterType="com.hyodong.kim.dto.CookDto">
+		UPDATE Cook set
+			cook_Title=#{param2}, cook_Writer=#{param3}, cook_Company=#{param4},
+			cook_Image=#{param5}, cook_Content=#{param6}, cook_Introduce=#{param7},
+			cook_Category=#{param8}
+		  WHERE cook_Index=#{param1}
+	</update>
+	
+	<delete id="deleteCook" parameterType="com.hyodong.kim.dto.CookDto">
+		DELETE FROM Cook WHERE cook_Index=#{param1}
+	</delete>
+	
+	<select id="callCook_Index" resultType="com.hyodong.kim.dto.CookDto">
+	SELECT cook_Index FROM Cook where cook_Index=#{param1}
+	</select>
+</mapper>

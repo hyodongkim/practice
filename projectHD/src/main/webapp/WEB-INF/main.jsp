@@ -320,10 +320,10 @@
 
         <div id="menu">
             <ul>
-                <li><a href="/user/views/books/books-korea">도서</a>
+                <li><a href="/user/all_cook">배달맛집</a>
                     <ul>
-                        <li><a href="/user/views/books/books-korea">국내</a></li>
-                        <li><a href="/user/views/books/books-overseas">해외</a></li>
+                        <li><a href="/user/fast_cook">전광석화 배달맛집</a></li>
+                        <li><a href="/user/all_cook">배달맛집 메뉴</a></li>
                     </ul>
                 </li>
             </ul>

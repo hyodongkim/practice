@@ -12,8 +12,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.hyodong.kim.dao.ICookDao;
 import com.hyodong.kim.dao.IMemberDao;
+import com.hyodong.kim.dto.CookDto;
 import com.hyodong.kim.dto.MemberDto;
 import com.hyodong.kim.service.hyodongKimService;
 
@@ -24,8 +27,19 @@ public class MyController {
 	private IMemberDao memberDao;
 	@Autowired
 	private hyodongKimService service;
-
+	@Autowired
+	private ICookDao cookDao;
+	@Autowired
+	private FileUploadService fileUploadService;
+	
 	@RequestMapping("/")
+	public String main(HttpServletRequest req, Model model) {
+				
+		
+		return "main";
+	}
+
+	@RequestMapping("/admin/memberMange")
 	public String memberlist( HttpServletRequest req, Model model ) {
 		
 		List<MemberDto> list = memberDao.memberlist();
@@ -151,6 +165,111 @@ public class MyController {
 						
 	}
 	
+	@RequestMapping("/admin/cookManage")
+	public String cookManage( HttpServletRequest req, Model model) {
+		
+		List<CookDto> list = cookDao.cookList();
+		model.addAttribute("cookList", list);
+		
+		return "admin/cookManage";
+	}
+	
+	@RequestMapping("/admin/write_cook")
+	public String write_cook( @RequestParam("cook_Index") int cook_Index,
+							  HttpServletRequest req, Model model){
+		
+		List<CookDto> list = cookDao.callCook(cook_Index);
+		model.addAttribute("cookList", list);
+		
+		return "admin/write_cook";
+	}
+	
+	@RequestMapping("/admin/write_cook1")
+	public String write_cook1( HttpServletRequest req, Model model) {
+	
+		
+		return "admin/write_cook1";
+	}
+	
+	@RequestMapping("/admin/write_cook2")
+	public String write_cook2(@RequestParam("cook_Index") int cook_Index,
+							  HttpServletRequest req, Model model){
+		
+		List<CookDto> list = cookDao.callCook_Index(cook_Index);
+		model.addAttribute("cookList", list);
+		
+		return "admin/write_cook2";
+	}
+	
+	@RequestMapping(value="/addCook", method=RequestMethod.GET)
+	public String addCook( 	
+					        
+					            @RequestParam("cook_Title") String cook_Title, 
+					            @RequestParam("cook_Writer") String cook_Writer, 
+					            @RequestParam("cook_Company") String cook_Company,
+					            @RequestParam("cook_Image") String cook_Image,
+					            @RequestParam("cook_Content") String cook_Content,
+					            @RequestParam("cook_Introduce") String cook_Introduce,
+					            @RequestParam("cook_Category") int cook_Category,
+					            Model model ) throws Exception{
+								
+		
+								cookDao.addCook(cook_Title, cook_Writer, cook_Company, cook_Image, cook_Content, cook_Introduce, cook_Category);
+					            
+
+								List<CookDto> list = cookDao.cookList();
+								model.addAttribute("cookList", list);
+								
+		return "admin/cookManage";
+				
+		
+	}
+
+	@RequestMapping(value="/updateCook", method=RequestMethod.GET)
+	public String updateCook( 
+					          
+								@RequestParam("cook_Index") int cook_Index,
+								@RequestParam("cook_Title") String cook_Title, 
+								@RequestParam("cook_Writer") String cook_Writer, 
+								@RequestParam("cook_Company") String cook_Company,
+								@RequestParam("cook_Image") MultipartFile  cook_Image,
+								@RequestParam("cook_Content") String cook_Content,
+								@RequestParam("cook_Introduce") String cook_Introduce,
+								@RequestParam("cook_Category") int cook_Category,
+								Model model ) throws Exception{
+		
+								String filename = fileUploadService.restore(cook_Image);
+								
+								cookDao.updateCook(cook_Index, cook_Title, cook_Writer, cook_Company, filename, cook_Content, cook_Introduce, cook_Category);
+							    
+								List<CookDto> list = cookDao.cookList();
+								model.addAttribute("cookList", list);
+								
+		return "admin/cookManage";
+						
+	}
+			
+	@RequestMapping(value="/deleteCook", method=RequestMethod.GET)
+	public String deleteCook( @RequestParam("cook_Index") int cook_Index, Model model ) throws Exception {
+		
+		cookDao.deleteCook(cook_Index);
+		
+		List<CookDto> list = cookDao.cookList();
+		model.addAttribute("cookList", list);
+							                     
+	    return "admin/cookManage";
+						
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public String login(MemberDto memberDto, 
 						@RequestParam("id") String id, 
@@ -177,7 +296,6 @@ public class MyController {
 		
 		
 	}
-		
 	
 	@RequestMapping("/user/login")
 	public String login( HttpServletRequest req, Model model) {
@@ -202,13 +320,6 @@ public class MyController {
 		return "user/logout";  
 	}
 	
-	@RequestMapping("/user/main")
-	public String main(HttpServletRequest req, Model model) {
-				
-		
-		return "user/main";
-	}
-	
 	@RequestMapping("/user/login_fail")
 	public String login_fail( HttpServletRequest req, Model model) {
 		
@@ -228,6 +339,18 @@ public class MyController {
 		
 		
 		return "user/login_ok";
+	}
+	
+	@RequestMapping("/user/all_cook")
+	public String all_cook( HttpServletRequest req, Model model) {
+		
+		return "user/all_cook";
+	}
+	
+	@RequestMapping("/user/fast_cook")
+	public String fast_cook( HttpServletRequest req, Model model) {
+		
+		return "user/fast_cook";
 	}
 	
 	
