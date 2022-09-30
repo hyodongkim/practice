@@ -2,17 +2,22 @@ package com.hyodong.kim;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.hyodong.kim.dao.ICookDao;
 import com.hyodong.kim.dao.IMemberDao;
@@ -31,6 +36,67 @@ public class MyController {
 	private ICookDao cookDao;
 	@Autowired
 	private FileUploadService fileUploadService;
+	@Autowired
+	private ServletContext context;
+	
+	@RequestMapping("/upload")
+	public @ResponseBody String root() throws Exception {
+		
+		System.out.println("path:" + context.getRealPath("/") );
+		System.out.println("path:" + context.getContextPath() );
+		String path = ResourceUtils.getFile("classpath:static/upload/").toPath().toString();
+		System.out.println("path:" + path );
+		
+		return "FileUpload With Param";
+	}
+
+	@RequestMapping("/uploadForm")
+	public String uploadForm() {
+
+		return "fileUploadForm";
+	}
+
+	@Bean(name = "multipartResolver")
+	public CommonsMultipartResolver multipartResolver() {
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+		multipartResolver.setMaxUploadSize(200000000);
+		multipartResolver.setMaxInMemorySize(200000000);
+		multipartResolver.setDefaultEncoding("utf-8");
+		return multipartResolver;
+	}
+	
+	@RequestMapping(value="/uploadOk", method = RequestMethod.POST)
+	public @ResponseBody String uploadOk(
+			Model model,
+			@RequestParam("user_id") String user_id,
+			@RequestParam("user_pw") String user_pw,
+			@RequestParam("filename") MultipartFile file) {
+		
+		String url = fileUploadService.restore(file);
+		model.addAttribute("url",url);
+		
+		return "result";
+	}
+	
+	
+	
+	
+	@RequestMapping("/index")
+	public String index( HttpServletRequest req, Model model ) {
+		// Alert 메시지 중복 제거
+		String alertMessage = (String)req.getSession().getAttribute("alert");
+		System.out.println( "index alertMessage : " + alertMessage );
+		
+		if( alertMessage != null ) {
+			req.setAttribute( "alert", alertMessage );
+			req.getSession().setAttribute( "alert", null );
+		}
+		
+		return "index";
+	}
+	
+	
+	
 	
 	@RequestMapping("/")
 	public String main(HttpServletRequest req, Model model) {
@@ -225,27 +291,38 @@ public class MyController {
 		
 	}
 
-	@RequestMapping(value="/updateCook", method=RequestMethod.GET)
+	@RequestMapping(value="/updateCook", method=RequestMethod.POST)
 	public String updateCook( 
 					          
 								@RequestParam("cook_Index") int cook_Index,
 								@RequestParam("cook_Title") String cook_Title, 
 								@RequestParam("cook_Writer") String cook_Writer, 
 								@RequestParam("cook_Company") String cook_Company,
-								@RequestParam("cook_Image") MultipartFile  cook_Image,
+								@RequestParam("cook_Image") MultipartFile cook_Image,
 								@RequestParam("cook_Content") String cook_Content,
 								@RequestParam("cook_Introduce") String cook_Introduce,
 								@RequestParam("cook_Category") int cook_Category,
 								Model model ) throws Exception{
 		
-								String filename = fileUploadService.restore(cook_Image);
+								String url = fileUploadService.restore(cook_Image);
 								
-								cookDao.updateCook(cook_Index, cook_Title, cook_Writer, cook_Company, filename, cook_Content, cook_Introduce, cook_Category);
+								cookDao.updateCook(cook_Index, cook_Title, cook_Writer, cook_Company, url, cook_Content, cook_Introduce, cook_Category);
 							    
-								List<CookDto> list = cookDao.cookList();
-								model.addAttribute("cookList", list);
+//								List<CookDto> list = cookDao.cookList();
+//								model.addAttribute("cookList", list);
 								
-		return "admin/cookManage";
+								System.out.println( "cook_Image:" + url );
+						      	
+								model.addAttribute( "cook_Index", cook_Index );
+								model.addAttribute( "cook_Title", cook_Title );
+								model.addAttribute( "cook_Writer", cook_Writer );
+								model.addAttribute( "cook_Company", cook_Company );
+								model.addAttribute( "cook_Image", cook_Image );
+								model.addAttribute( "cook_Content", cook_Content );
+							    model.addAttribute( "cook_Introduce", cook_Introduce );
+								model.addAttribute( "cook_Category", cook_Category );
+								
+		return "redirect:/admin/cookManage";
 						
 	}
 			

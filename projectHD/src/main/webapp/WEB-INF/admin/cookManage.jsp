@@ -99,10 +99,12 @@
                     <td>${cook.cook_Title}</td>
                     <td>${cook.cook_Writer}</td>
                     <td>${cook.cook_Company}</td>                  
-                    <td>${cook.cook_Image}</td>
+                    <td>${cook.cook_Image}<a href="javascript:void(0);" onclick="window.open('/upload/${cook.cook_Image}', 'pop01', 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no');"><img src="/upload/${cook.cook_Image}" wdith="20px" height="30px"></a></td>
                     <td>${cook.cook_Content}</td>
                     <td>${cook.cook_Introduce}</td>
                     <td>${cook.cook_Category}</td>
+                    
+                    
                     
                     <td>
                     	<a href="/admin/write_cook?cook_Index=${cook.cook_Index}">갱신</a>
