@@ -267,20 +267,21 @@ public class MyController {
 		return "admin/write_cook2";
 	}
 	
-	@RequestMapping(value="/addCook", method=RequestMethod.GET)
+	@RequestMapping(value="/addCook", method=RequestMethod.POST)
 	public String addCook( 	
 					        
 					            @RequestParam("cook_Title") String cook_Title, 
 					            @RequestParam("cook_Writer") String cook_Writer, 
 					            @RequestParam("cook_Company") String cook_Company,
-					            @RequestParam("cook_Image") String cook_Image,
+					            @RequestParam("cook_Image") MultipartFile cook_Image,
 					            @RequestParam("cook_Content") String cook_Content,
 					            @RequestParam("cook_Introduce") String cook_Introduce,
 					            @RequestParam("cook_Category") int cook_Category,
 					            Model model ) throws Exception{
 								
+								String filename = fileUploadService.restore(cook_Image);
 		
-								cookDao.addCook(cook_Title, cook_Writer, cook_Company, cook_Image, cook_Content, cook_Introduce, cook_Category);
+								cookDao.addCook(cook_Title, cook_Writer, cook_Company, filename, cook_Content, cook_Introduce, cook_Category);
 					            
 
 								List<CookDto> list = cookDao.cookList();
@@ -308,25 +309,14 @@ public class MyController {
 								
 								cookDao.updateCook(cook_Index, cook_Title, cook_Writer, cook_Company, url, cook_Content, cook_Introduce, cook_Category);
 							    
-//								List<CookDto> list = cookDao.cookList();
-//								model.addAttribute("cookList", list);
-								
-								System.out.println( "cook_Image:" + url );
+								List<CookDto> list = cookDao.cookList();
+								model.addAttribute("cookList", list);
 						      	
-								model.addAttribute( "cook_Index", cook_Index );
-								model.addAttribute( "cook_Title", cook_Title );
-								model.addAttribute( "cook_Writer", cook_Writer );
-								model.addAttribute( "cook_Company", cook_Company );
-								model.addAttribute( "cook_Image", cook_Image );
-								model.addAttribute( "cook_Content", cook_Content );
-							    model.addAttribute( "cook_Introduce", cook_Introduce );
-								model.addAttribute( "cook_Category", cook_Category );
-								
 		return "redirect:/admin/cookManage";
 						
 	}
 			
-	@RequestMapping(value="/deleteCook", method=RequestMethod.GET)
+	@RequestMapping(value="/deleteCook", method=RequestMethod.POST)
 	public String deleteCook( @RequestParam("cook_Index") int cook_Index, Model model ) throws Exception {
 		
 		cookDao.deleteCook(cook_Index);

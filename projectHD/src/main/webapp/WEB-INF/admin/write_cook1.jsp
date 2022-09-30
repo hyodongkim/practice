@@ -12,7 +12,7 @@
 <title>삽입</title>
 </head>
 <body>
-	<form action="<c:url value="/addCook"/>" method="get" enctype="multipart/form-data">
+	<form action="<c:url value="/addCook"/>" method="post" enctype="multipart/form-data">
 		
 		<table width="500">
 	

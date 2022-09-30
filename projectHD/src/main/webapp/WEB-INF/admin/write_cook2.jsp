@@ -12,7 +12,7 @@
 <title>삭제</title>
 </head>
 <body>
-	<form action="<c:url value="/deleteCook"/>" method="get" enctype="multipart/form-data">
+	<form action="<c:url value="/deleteCook"/>" method="post" enctype="multipart/form-data">
 		<c:forEach var="cook" items="${cookList}">
 		<table width="500">
 		
