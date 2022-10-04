@@ -1,9 +1,11 @@
 package com.hyodong.kim;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -277,15 +279,14 @@ public class MyController {
 					            @RequestParam("cook_Content") String cook_Content,
 					            @RequestParam("cook_Introduce") String cook_Introduce,
 					            @RequestParam("cook_Category") int cook_Category,
-					            Model model ) throws Exception{
-								
+					            Model model,  HttpServletResponse res ) throws Exception{
+
 								String filename = fileUploadService.restore(cook_Image);
 		
-								cookDao.addCook(cook_Title, cook_Writer, cook_Company, filename, cook_Content, cook_Introduce, cook_Category);
-					            
-
+								cookDao.addCook(cook_Title, cook_Writer, cook_Company, filename, cook_Content, cook_Introduce, cook_Category);	
+		
 								List<CookDto> list = cookDao.cookList();
-								model.addAttribute("cookList", list);
+								model.addAttribute("cookList", list);	
 								
 		return "admin/cookManage";
 				
@@ -303,16 +304,17 @@ public class MyController {
 								@RequestParam("cook_Content") String cook_Content,
 								@RequestParam("cook_Introduce") String cook_Introduce,
 								@RequestParam("cook_Category") int cook_Category,
-								Model model ) throws Exception{
-		
-								String url = fileUploadService.restore(cook_Image);
-								
-								cookDao.updateCook(cook_Index, cook_Title, cook_Writer, cook_Company, url, cook_Content, cook_Introduce, cook_Category);
+								Model model,  HttpServletResponse res ) throws Exception{
 							    
+
+								String url = fileUploadService.restore(cook_Image);
+		
+								cookDao.updateCook(cook_Index, cook_Title, cook_Writer, cook_Company, url, cook_Content, cook_Introduce, cook_Category);
+								
 								List<CookDto> list = cookDao.cookList();
-								model.addAttribute("cookList", list);
+								model.addAttribute("cookList", list);	
 						      	
-		return "redirect:/admin/cookManage";
+		return "admin/cookManage";
 						
 	}
 			
