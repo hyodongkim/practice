@@ -19,5 +19,4 @@ public interface ICookDao {
     public int deleteCook( int cook_Index );
     
     public List<CookDto> callCook_Index(int cook_Index);
-	
 }
