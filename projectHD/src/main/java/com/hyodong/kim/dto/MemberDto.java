@@ -1,7 +1,8 @@
 package com.hyodong.kim.dto;
 
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
+	@NoArgsConstructor
 	@Data
 	public class MemberDto {
 		private int num;

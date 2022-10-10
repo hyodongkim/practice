@@ -1,5 +1,6 @@
 package com.hyodong.kim;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import com.hyodong.kim.dao.ICookDao;
 import com.hyodong.kim.dao.IMemberDao;
 import com.hyodong.kim.dto.CookDto;
+import com.hyodong.kim.dto.KIMDto;
 import com.hyodong.kim.dto.MemberDto;
 import com.hyodong.kim.service.hyodongKimService;
 
@@ -421,6 +423,19 @@ public class MyController {
 		
 		return "user/fast_cook";
 	}
+	@RequestMapping("/gggg")
+	@ResponseBody 
+	public List<MemberDto> KIM() {
+		
+		List<MemberDto> list = memberDao.memberlist();
+		return list;
+	}
 	
-	
+	@RequestMapping("/mmmm")
+	@ResponseBody
+	public List<CookDto> dto(){
+		List<CookDto> m = cookDao.cookList();
+		
+		return m;
+	}
 }
