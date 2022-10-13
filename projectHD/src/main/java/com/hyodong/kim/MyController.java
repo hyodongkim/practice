@@ -2,7 +2,10 @@ package com.hyodong.kim;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +32,7 @@ import com.hyodong.kim.dao.IMemberDao;
 import com.hyodong.kim.dto.CookDto;
 import com.hyodong.kim.dto.KIMDto;
 import com.hyodong.kim.dto.MemberDto;
+import com.hyodong.kim.dto.oDto;
 import com.hyodong.kim.service.hyodongKimService;
 
 @Controller
@@ -432,6 +436,22 @@ public class MyController {
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping("/h")
+	public String h(Model model) {
+		
+		List<MemberDto> m = memberDao.memberlist();
+		model.addAttribute("memberList",m);
+		
+		return "hTest";
+	}
+	
 	@RequestMapping("/gggg")
 	@ResponseBody 
 	public List<MemberDto> KIM() {
@@ -485,6 +505,39 @@ public class MyController {
 		List<CookDto> dto = cookDao.callCook(4);
 		
 		return dto;
+	}
+	
+	
+	
+	
+	@GetMapping("/p/{cook_Index}")
+	@ResponseBody
+	public List<CookDto> getallp(@PathVariable int cook_Index) throws IOException {
+		
+		List<CookDto> dto = cookDao.callCook(cook_Index);
+		
+		return dto;
+	}
+	
+	@RequestMapping("/o")
+	public String getallo(){
+		
+		return "oTest";
+	}
+	
+	@RequestMapping(value="/oAction", method = RequestMethod.GET)
+	public String oooooo( @RequestParam("ooo") String ooo, Model model, HttpServletRequest Request) throws Exception{
+		
+		String ooo1 = Request.getParameter("ooo");
+		
+		model.addAttribute("ooo",ooo1);
+      
+		return "oEnd";
+	}
+	@RequestMapping("/oE")
+	public String getalloE(Model model){
+
+		return "oEnd";
 	}
 	
 }
